@@ -62,7 +62,53 @@ void display7SEG(int num) {
 	for (int i = 0; i < 7; i++) {
 	        HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_SET);
 	    }
-    HAL_GPIO_WritePin(segmentPorts[num], segmentPins[num], GPIO_PIN_RESET);
+	if (num == 0) {
+		for (int i = 0; i < 6; i++) {
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 1) {
+		HAL_GPIO_WritePin(segmentPorts[1], segmentPins[1], GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(segmentPorts[2], segmentPins[2], GPIO_PIN_RESET);
+	} else if (num == 2) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 2 || i == 5) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 3) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 4 || i == 5) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 4) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 0 || i == 3 || i == 4) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 5) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 1 || i == 4) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 6) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 1) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 7) {
+		for (int i = 0; i < 3; i++) {
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 8) {
+		for (int i = 0; i < 7; i++) {
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	} else if (num == 9) {
+		for (int i = 0; i < 7; i++) {
+			if (i == 4) continue;
+			HAL_GPIO_WritePin(segmentPorts[i], segmentPins[i], GPIO_PIN_RESET);
+		}
+	}
+
 
 }
 /* USER CODE END 0 */

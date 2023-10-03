@@ -31,7 +31,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+uint16_t segmentPin[12] = {led1_Pin, led2_Pin, led3_Pin, led4_Pin, led5_Pin, led6_Pin, led7_Pin,
+							led8_Pin, led9_Pin, led10_Pin, led11_Pin, led12_Pin};
+GPIO_TypeDef* segmentPort[12] = {led1_GPIO_Port, led2_GPIO_Port, led3_GPIO_Port, led4_GPIO_Port, led5_GPIO_Port, led6_GPIO_Port, led7_GPIO_Port,
+		led8_GPIO_Port, led9_GPIO_Port, led10_GPIO_Port, led11_GPIO_Port, led12_GPIO_Port};
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,6 +51,11 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+void clearAllClock () {
+	for (int i = 0; i < 12; i++) {
+		HAL_GPIO_WritePin(segmentPort[i], segmentPin[i], GPIO_PIN_SET);
+	}
+}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -86,9 +94,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-uint16_t segmentPin[12] = {led1_Pin, led2_Pin, led3_Pin, led4_Pin, led5_Pin, led6_Pin, led7_Pin,
-							led8_Pin, led9_Pin, led10_Pin, led11_Pin, led12_Pin};
-GPIO_TypeDef* segmentPort[12] = {led1_GPIO_Port, led2_GPIO_Port, led3_GPIO_Port, led4_GPIO_Port, led5_GPIO_Port, led6_GPIO_Port, led7_GPIO_Port, led8_GPIO_Port, led9_GPIO_Port, led10_GPIO_Port, led11_GPIO_Port, led12_GPIO_Port};
+
   /* USER CODE END 2 */
 int count = 0;
   /* Infinite loop */
@@ -107,6 +113,7 @@ int count = 0;
 
 	HAL_GPIO_WritePin(segmentPort[count], segmentPin[count], GPIO_PIN_RESET);
 	count++;
+	if (count == 8) clearAllClock();
 	HAL_Delay(1000);
 
 

@@ -60,7 +60,9 @@ void setNumberOnClock(int num) {
 	clearAllClock();
 	HAL_GPIO_WritePin(segmentPort[num], segmentPin[num], GPIO_PIN_RESET);
 }
-
+void clearNumberOnClock(int num) {
+	HAL_GPIO_WritePin(segmentPort[num], segmentPin[num], GPIO_PIN_SET);
+}
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -107,8 +109,9 @@ int count = 0;
   while (1)
   {
     /* USER CODE END WHILE */
+
 	 if (count >= 12) count = 0;
-	setNumberOnClock(count);
+	clearNumberOnClock(count);
 	count++;
 	HAL_Delay(1000);
 

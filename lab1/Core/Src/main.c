@@ -57,7 +57,6 @@ void clearAllClock () {
 	}
 }
 void setNumberOnClock(int num) {
-	clearAllClock();
 	HAL_GPIO_WritePin(segmentPort[num], segmentPin[num], GPIO_PIN_RESET);
 }
 void clearNumberOnClock(int num) {
@@ -106,24 +105,45 @@ int main(void)
 int sec = 0;
 int min = 0;
 int hour = 0;
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
+	 if (sec == 0 && min == 0 && hour == 0) {
+		 clearAllClock();
+	 }
+	 if (sec%5 == 0) {
+		 if (sec - 5 >= 0) {
+			 clearNumberOnClock((sec-5)/5);
+		 }
 
+	 }
 	 if (sec >= 60)  {
 		 sec = 0;
 		 min++;
+		 if (min%5 == 0) {
+			 if (min - 5 >= 0) {
+				 clearNumberOnClock((min-5)/5);
+			 }
+
+		 }
 		 if (min >= 60) {
 			 min = 0;
 			 hour++;
-
+			 if (hour - 1>= 0)
+			 clearNumberOnClock(hour-1);
+			 if (hour >= 12 ) {
+				 hour = 0;
+			 }
 		 }
 	 }
-	clearNumberOnClock(count);
-	count++;
-	HAL_Delay(1000);
+	 setNumberOnClock(sec/5);
+	 	 setNumberOnClock(min/5);
+	 	 setNumberOnClock(hour);
+	sec++;
+	HAL_Delay(10);
 
 
     /* USER CODE BEGIN 3 */

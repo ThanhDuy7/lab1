@@ -355,12 +355,11 @@ int hour = 0;
  80002f8:	68fb      	ldr	r3, [r7, #12]
  80002fa:	3301      	adds	r3, #1
  80002fc:	60fb      	str	r3, [r7, #12]
-	HAL_Delay(10);
- 80002fe:	200a      	movs	r0, #10
- 8000300:	f000 f952 	bl	80005a8 <HAL_Delay>
+	HAL_Delay(1000);
+ 80002fe:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
+ 8000302:	f000 f951 	bl	80005a8 <HAL_Delay>
 	 if (sec == 0 && min == 0 && hour == 0) {
- 8000304:	e783      	b.n	800020e <main+0x1e>
- 8000306:	bf00      	nop
+ 8000306:	e782      	b.n	800020e <main+0x1e>
  8000308:	66666667 	.word	0x66666667
 
 0800030c <SystemClock_Config>:

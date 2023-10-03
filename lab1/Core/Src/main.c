@@ -143,7 +143,7 @@ int hour = 0;
 	 	 setNumberOnClock(min/5);
 	 	 setNumberOnClock(hour);
 	sec++;
-	HAL_Delay(10);
+	HAL_Delay(1000);
 
 
     /* USER CODE BEGIN 3 */

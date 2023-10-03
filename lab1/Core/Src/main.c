@@ -103,14 +103,24 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
-int count = 0;
+int sec = 0;
+int min = 0;
+int hour = 0;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
 
-	 if (count >= 12) count = 0;
+	 if (sec >= 60)  {
+		 sec = 0;
+		 min++;
+		 if (min >= 60) {
+			 min = 0;
+			 hour++;
+
+		 }
+	 }
 	clearNumberOnClock(count);
 	count++;
 	HAL_Delay(1000);

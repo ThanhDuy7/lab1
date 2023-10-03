@@ -36,7 +36,15 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+  enum TrafficLightState {
+      RED1_GREEN2,
+   RED1_YELLOW2,
+   GREEN1_RED2,
+   YELLOW1_RED2
+    };
+  enum trafficLight {
+	  RED1, RED2, YELLOW1, YELLOW2, GREEN1, GREEN2
+  };
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -48,6 +56,9 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+void turnonTrafficLights (enum trafficLight light);
+
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -87,6 +98,10 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
+  // Initialize the current state of the traffic light
+  int counter = 3;
+  enum TrafficLightState currentState = RED1_GREEN2;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -94,34 +109,55 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	     switch (currentState) {
+	       case RED1_GREEN2:
+	        turnonTrafficLights(RED1);
+	        turnonTrafficLights(GREEN2);
+	        counter--;
+	        if(counter <= 0)
+	        {
+	        currentState = RED1_YELLOW2;
+	         counter = 2;
+	        }
+	        break;
+	       case RED1_YELLOW2:
+	    	   turnonTrafficLights(RED1);
+	    	   turnonTrafficLights(YELLOW2);
+	        counter--;
+	        if(counter <= 0)
+	        {
+	        	currentState = GREEN1_RED2;
+	         counter = 3;
+	        }
+	        break;
+	       case GREEN1_RED2:
+	    	   turnonTrafficLights(GREEN1);
+	    	   turnonTrafficLights(RED2);
+	        counter--;
 
-	HAL_GPIO_WritePin(Led_red_GPIO_Port, Led_red_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(Led_yellow_GPIO_Port, Led_yellow_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_SET);
+	        if(counter <= 0)
+	        {
+	        currentState = YELLOW1_RED2;
+	         counter = 2;
 
-	HAL_GPIO_WritePin(Led_red_vert_GPIO_Port, Led_red_vert_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_green_vert_GPIO_Port, Led_green_vert_Pin, GPIO_PIN_RESET);
-	HAL_Delay(3000);
+	        }
+	        break;
+	       case YELLOW1_RED2:
+	    	   turnonTrafficLights(YELLOW1);
+	    	   turnonTrafficLights(RED2);
+	        counter--;
 
-	HAL_GPIO_WritePin(Led_green_vert_GPIO_Port, Led_green_vert_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_RESET);
-	HAL_Delay(2000);
+	        if(counter <= 0)
+	        {
+	        currentState = RED1_GREEN2;
+	         counter = 3;
 
-	HAL_GPIO_WritePin(Led_red_GPIO_Port, Led_red_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_red_vert_GPIO_Port, Led_red_vert_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_RESET);
-	HAL_Delay(3000);
-
-	HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(Led_yellow_GPIO_Port, Led_yellow_Pin, GPIO_PIN_RESET);
-	HAL_Delay(2000);
-
-
-
-    /* USER CODE BEGIN 3 */
+	        }
+	        break;
+	     }
+	     HAL_Delay(1000);
   }
+    /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
@@ -193,7 +229,45 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void turnonTrafficLights(enum trafficLight light) {
+	switch (light) {
+	case RED1:
+		HAL_GPIO_WritePin(Led_red_GPIO_Port, Led_red_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(Led_yellow_GPIO_Port, Led_yellow_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_SET);
+	break;
 
+	case RED2:
+			HAL_GPIO_WritePin(Led_red_vert_GPIO_Port, Led_red_vert_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_green_vert_GPIO_Port, Led_green_vert_Pin, GPIO_PIN_SET);
+		break;
+
+	case GREEN1:
+			HAL_GPIO_WritePin(Led_red_GPIO_Port, Led_red_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_yellow_GPIO_Port, Led_yellow_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_RESET);
+		break;
+
+	case GREEN2:
+			HAL_GPIO_WritePin(Led_red_vert_GPIO_Port, Led_red_vert_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_green_vert_GPIO_Port, Led_green_vert_Pin, GPIO_PIN_RESET);
+		break;
+	case YELLOW1:
+			HAL_GPIO_WritePin(Led_red_GPIO_Port, Led_red_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_yellow_GPIO_Port, Led_yellow_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(Led_green_GPIO_Port, Led_green_Pin, GPIO_PIN_SET);
+		break;
+
+	case YELLOW2:
+			HAL_GPIO_WritePin(Led_red_vert_GPIO_Port, Led_red_vert_Pin, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(Led_yellow_vert_GPIO_Port, Led_yellow_vert_Pin, GPIO_PIN_RESET);
+			HAL_GPIO_WritePin(Led_green_vert_GPIO_Port, Led_green_vert_Pin, GPIO_PIN_SET);
+		break;
+
+	}
+}
 /* USER CODE END 4 */
 
 /**
